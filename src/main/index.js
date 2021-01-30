@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import {app, BrowserWindow} from 'electron'
 
 /**
  * Set `__static` path to static files in production
@@ -20,12 +20,10 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    height: 563,
+    height: 850,
     useContentSize: true,
-    width: 1000
-    // nodeIntegration: true,//是否集成node
-    // // devTools:false,//是否开启 DevTools
-    // webSecurity: false//是否禁用同源策略(上线时删除此配置)
+    width: 1000,
+    frame: false
   })
 
   mainWindow.loadURL(winURL)
@@ -34,6 +32,22 @@ function createWindow () {
     mainWindow = null
   })
 }
+
+const electron = require('electron')
+const ipc = electron.ipcMain
+ipc.on('window-close', function () {
+  mainWindow.close()
+})
+ipc.on('window-min', function () {
+  mainWindow.minimize()
+})
+ipc.on('window-max', function () {
+  if (mainWindow.isMaximized()) {
+    mainWindow.restore()
+  } else {
+    mainWindow.maximize()
+  }
+})
 
 app.on('ready', createWindow)
 

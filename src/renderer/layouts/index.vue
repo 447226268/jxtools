@@ -22,7 +22,7 @@ export default {
 
 <style>
 header {
-  background-color: red;
+  -webkit-app-region: drag
 }
 
 .content {
